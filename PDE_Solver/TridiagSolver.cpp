@@ -55,6 +55,7 @@ void TridiagSolver::solve(float* a, float* b, float* c, float* y)
 	}
 }
 
+// TODO - change code so that any size is allowed, not only powers of 2
 void TridiagSolver::solveThomas(float* d_a, float* d_b, float* d_c, float* d_y)
 {
 	int nbBlocks = (int) (size + 255) / 256;
@@ -63,6 +64,7 @@ void TridiagSolver::solveThomas(float* d_a, float* d_b, float* d_c, float* d_y)
 	TridiagKernel::thomas_wrapper(nbBlocks, blockSize, d_a, d_b, d_c, d_y, dim);
 }
 
+// TODO - change code so that any size is allowed, not only powers of 2
 void TridiagSolver::solvePCR(float* d_a, float* d_b, float* d_c, float* d_y)
 {
 	int minTB = (dim > 255) + 4 * (dim > 63 && dim < 256) + 16 * (dim > 15 && dim < 64) + 64 * (dim > 3 && dim < 16);

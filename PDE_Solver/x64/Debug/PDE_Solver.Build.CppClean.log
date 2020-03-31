@@ -1,15 +1,20 @@
-x64\debug\tridiagkernels.cu.obj
+c:\users\erik\onedrive - ecole polytechnique\m2-proba-finance-2019\cudaprogramming\cudapde\pde_solver\x64\debug\vc142.pdb
+c:\users\erik\onedrive - ecole polytechnique\m2-proba-finance-2019\cudaprogramming\cudapde\pde_solver\x64\debug\vc142.idb
+c:\users\erik\onedrive - ecole polytechnique\m2-proba-finance-2019\cudaprogramming\cudapde\pde_solver\x64\debug\tridiagsolver.obj
 x64\debug\main.cu.obj
-c:\users\erik\onedrive - ecole polytechnique\m2-proba-finance-2019\cudaprogramming\cudapde\x64\debug\pde_solver.ilk
+x64\debug\tridiagkernel.cu.obj
 c:\users\erik\onedrive - ecole polytechnique\m2-proba-finance-2019\cudaprogramming\cudapde\x64\debug\pde_solver.exe
+c:\users\erik\onedrive - ecole polytechnique\m2-proba-finance-2019\cudaprogramming\cudapde\x64\debug\pde_solver.ilk
 c:\users\erik\onedrive - ecole polytechnique\m2-proba-finance-2019\cudaprogramming\cudapde\x64\debug\pde_solver.pdb
 c:\users\erik\onedrive - ecole polytechnique\m2-proba-finance-2019\cudaprogramming\cudapde\pde_solver\x64\debug\main.cu.cache
+c:\users\erik\onedrive - ecole polytechnique\m2-proba-finance-2019\cudaprogramming\cudapde\pde_solver\x64\debug\tridiagkernel.cu.cache
 c:\users\erik\onedrive - ecole polytechnique\m2-proba-finance-2019\cudaprogramming\cudapde\pde_solver\x64\debug\tridiagkernels.cu.cache
 c:\users\erik\onedrive - ecole polytechnique\m2-proba-finance-2019\cudaprogramming\cudapde\pde_solver\x64\debug\main.cu.obj
+c:\users\erik\onedrive - ecole polytechnique\m2-proba-finance-2019\cudaprogramming\cudapde\pde_solver\x64\debug\tridiagkernel.cu.obj
 c:\users\erik\onedrive - ecole polytechnique\m2-proba-finance-2019\cudaprogramming\cudapde\pde_solver\x64\debug\tridiagkernels.cu.obj
-c:\users\erik\onedrive - ecole polytechnique\m2-proba-finance-2019\cudaprogramming\cudapde\pde_solver\x64\debug\vc142.idb
-c:\users\erik\onedrive - ecole polytechnique\m2-proba-finance-2019\cudaprogramming\cudapde\pde_solver\x64\debug\vc142.pdb
 c:\users\erik\onedrive - ecole polytechnique\m2-proba-finance-2019\cudaprogramming\cudapde\pde_solver\x64\debug\pde_solver.tlog\cl.command.1.tlog
+c:\users\erik\onedrive - ecole polytechnique\m2-proba-finance-2019\cudaprogramming\cudapde\pde_solver\x64\debug\pde_solver.tlog\cl.read.1.tlog
+c:\users\erik\onedrive - ecole polytechnique\m2-proba-finance-2019\cudaprogramming\cudapde\pde_solver\x64\debug\pde_solver.tlog\cl.write.1.tlog
 c:\users\erik\onedrive - ecole polytechnique\m2-proba-finance-2019\cudaprogramming\cudapde\pde_solver\x64\debug\pde_solver.tlog\cudacompile.read.1u.tlog
 c:\users\erik\onedrive - ecole polytechnique\m2-proba-finance-2019\cudaprogramming\cudapde\pde_solver\x64\debug\pde_solver.tlog\cudacompile.write.1u.tlog
 c:\users\erik\onedrive - ecole polytechnique\m2-proba-finance-2019\cudaprogramming\cudapde\pde_solver\x64\debug\pde_solver.tlog\link.command.1.tlog

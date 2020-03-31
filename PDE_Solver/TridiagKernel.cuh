@@ -16,4 +16,7 @@ namespace TridiagKernel {
 	void pcr_wrapper(int nbBlocks, int blockSize, int sharedMem, float* d_a, float* d_b, float* d_c, float* d_y, int dim);
 	__global__ void pcr_k(float* a, float* b, float* c, float* y, int n);
 
+	void pcr_wrapper(int nbBlocks, int blockSize, int sharedMem, float d_a, float d_b, float d_c, float* d_y, int dim);
+	__global__ void pcr_k(float a, float b, float c, float* y, int n);
+
 }

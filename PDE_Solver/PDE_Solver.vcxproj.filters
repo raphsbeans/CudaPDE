@@ -5,6 +5,9 @@
     <CudaCompile Include="TridiagKernel.cu">
       <Filter>TridiagSolver\kernel</Filter>
     </CudaCompile>
+    <CudaCompile Include="constVolKernel.cu">
+      <Filter>ConstVol Model</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TridiagKernel.cuh">
@@ -13,6 +16,9 @@
     <ClInclude Include="TridiagSolver.h">
       <Filter>TridiagSolver</Filter>
     </ClInclude>
+    <ClInclude Include="constVolKernel.cuh">
+      <Filter>ConstVol Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="TridiagSolver">
@@ -20,6 +26,9 @@
     </Filter>
     <Filter Include="TridiagSolver\kernel">
       <UniqueIdentifier>{fe944d5d-5a1a-4140-865a-34533f1d95b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ConstVol Model">
+      <UniqueIdentifier>{62da8d29-8af6-4d1a-a688-a887f9ca8c3f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

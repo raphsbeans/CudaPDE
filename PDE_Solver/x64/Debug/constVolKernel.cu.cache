@@ -1,4 +1,4 @@
-Identity=TridiagKernels.cu
+Identity=constVolKernel.cu
 AdditionalCompilerOptions=
 AdditionalCompilerOptions=
 AdditionalDependencies=
@@ -8,7 +8,7 @@ AdditionalOptions=
 AdditionalOptions=
 CodeGeneration=compute_30,sm_30
 CodeGeneration=compute_30,sm_30
-CompileOut=x64\Debug\TridiagKernels.cu.obj
+CompileOut=x64\Debug\constVolKernel.cu.obj
 CudaRuntime=Static
 CudaToolkitCustomDir=
 Defines=;WIN32;WIN64;_DEBUG;_CONSOLE;_MBCS;
