@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CudaCompile Include="main.cu" />
+    <CudaCompile Include="TridiagKernel.cu">
+      <Filter>TridiagSolver\kernel</Filter>
+    </CudaCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TridiagKernel.cuh">
+      <Filter>TridiagSolver\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="TridiagSolver.h">
+      <Filter>TridiagSolver</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="TridiagSolver">
+      <UniqueIdentifier>{66b49e21-9533-47de-98ea-673cd7002672}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TridiagSolver\kernel">
+      <UniqueIdentifier>{fe944d5d-5a1a-4140-865a-34533f1d95b4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="TridiagSolver.cpp">
+      <Filter>TridiagSolver</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
