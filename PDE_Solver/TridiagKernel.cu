@@ -24,7 +24,7 @@ namespace TridiagKernel {
 		bet = b[idx * n];
 		y[idx * n] = y[idx * n] / bet;
 		for (int j = 1; j < n; ++j) {
-			gam[j] = c[idx * n + j] / bet;
+			gam[j] = c[idx * n + j - 1] / bet;
 			bet = b[idx * n + j] - a[idx * n + j] * gam[j];
 
 			if (fabsf(bet) < EPS)
