@@ -96,28 +96,21 @@ namespace TridiagKernel {
 				aLp = sa[tL];
 				cLp = sc[tL];
 				yLp = sy[tL];
-
-				//bL = b[tidx] - a[tidx]*c[tidx]/b[tidx-1];
-				bL -= aL * cL / bLp;
-				//yL = y[tidx] - a[tidx]*y[tidx-1]/b[tidx-1];
-				yL -= aL * yLp / bLp;
-				//aL = -a[tidx]*a[tidx-1]/b[tidx-1];
-				aL = -aL * aLp / bLp;
-
-				//aL = -aL * aLp / bLp;
+				float temp1 = aL / bLp;
+				bL -= cLp * temp1;
+				yL -= yLp * temp1;
+				aL = -aLp * temp1;
 			}
 
 			aLp = sa[tR];
 			bLp = sb[tR];
 			cLp = sc[tR];
+			float temp2 = cL / bLp;
 			if (fabsf(aLp) > EPS) {
 				yLp = sy[tR];
-				//bL -= c[tidx+1]*a[tidx+1]/b[tidx+1];
-				bL -= cLp * aLp / bLp;
-				//yL -= c[tidx+1]*y[tidx+1]/b[tidx+1];
-				yL -= cLp * yLp / bLp;
-
-				cL = -cL * cLp / bLp;
+				bL -= aLp * temp2;
+				yL -= yLp * temp2;
+				cL = -cLp * temp2;
 			}
 			__syncthreads();
 			//Permutation phase
