@@ -82,10 +82,14 @@
     <CudaCompile Include="TridiagKernel.cu" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ConstVolPDESolver.cpp" />
     <ClCompile Include="TridiagSolver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constVolKernel.cuh" />
+    <ClInclude Include="ConstVolPDESolver.h" />
+    <ClInclude Include="cuda_definitions.cuh" />
+    <ClInclude Include="Payoff.h" />
     <ClInclude Include="TridiagKernel.cuh" />
     <ClInclude Include="TridiagSolver.h" />
   </ItemGroup>

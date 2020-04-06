@@ -1,5 +1,4 @@
-#include "cuda_runtime.h"
-#include "device_launch_parameters.h"
+#include "cuda_definitions.cuh"
 #include "TridiagSolver.h"
 
 #include <iostream>

@@ -6,7 +6,7 @@
       <Filter>TridiagSolver\kernel</Filter>
     </CudaCompile>
     <CudaCompile Include="constVolKernel.cu">
-      <Filter>ConstVol Model</Filter>
+      <Filter>ConstVol Model\kernel</Filter>
     </CudaCompile>
   </ItemGroup>
   <ItemGroup>
@@ -16,9 +16,14 @@
     <ClInclude Include="TridiagSolver.h">
       <Filter>TridiagSolver</Filter>
     </ClInclude>
-    <ClInclude Include="constVolKernel.cuh">
+    <ClInclude Include="cuda_definitions.cuh" />
+    <ClInclude Include="ConstVolPDESolver.h">
       <Filter>ConstVol Model</Filter>
     </ClInclude>
+    <ClInclude Include="constVolKernel.cuh">
+      <Filter>ConstVol Model\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="Payoff.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="TridiagSolver">
@@ -30,10 +35,16 @@
     <Filter Include="ConstVol Model">
       <UniqueIdentifier>{62da8d29-8af6-4d1a-a688-a887f9ca8c3f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ConstVol Model\kernel">
+      <UniqueIdentifier>{755a1bc6-a13c-437b-b451-ebd9bb979a05}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TridiagSolver.cpp">
       <Filter>TridiagSolver</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstVolPDESolver.cpp">
+      <Filter>ConstVol Model</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

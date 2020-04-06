@@ -3,19 +3,42 @@
 #include <stdio.h>
 #include <math.h>
 
-namespace TridiagKernel {
+namespace TridiagSolverImpl {
 
-	// Thomas ==================================================================================================================
+	void thomasGPU(size_t size, size_t dim, float* d_a, float* d_b, float* d_c, float* d_y)
+	{
+		size_t nbBlocks = (int)(size + 255) / 256;
+		size_t blockSize = 256;
 
-	void thomas_wrapper(int nbBlocks, int blockSize, float* d_a, float* d_b, float* d_c, float* d_y, int dim) {
-		thom_k <<<nbBlocks, blockSize >>> (d_a, d_b, d_c, d_y, dim);
+		thom_k <<< nbBlocks, blockSize >>> (d_a, d_b, d_c, d_y, dim);
 	}
 
+	void pcr(size_t size, size_t dim, float* d_a, float* d_b, float* d_c, float* d_y)
+	{
+		size_t minTB = (dim > 255) + 4 * (dim > 63 && dim < 256) + 16 * (dim > 15 && dim < 64) + 64 * (dim > 3 && dim < 16);
+		size_t nbBlocks = (size + minTB - 1) / minTB;
+		size_t blockSize = dim * minTB;
+		size_t sharedMem = 5 * minTB * dim * sizeof(float);
+
+		pcr_k <<< nbBlocks, blockSize, sharedMem >>> (d_a, d_b, d_c, d_y, dim);
+	}
+
+	void pcr(size_t size, size_t dim, float a, float b, float c, float* d_y)
+	{
+		size_t minTB = (dim > 255) + 4 * (dim > 63 && dim < 256) + 16 * (dim > 15 && dim < 64) + 64 * (dim > 3 && dim < 16);
+		size_t nbBlocks = (size + minTB - 1) / minTB;
+		size_t blockSize = dim * minTB;
+		size_t sharedMem = 5 * minTB * dim * sizeof(float);
+
+		pcr_k <<< nbBlocks, blockSize, sharedMem >>> (a, b, c, d_y, dim);
+	}
+
+	// Thomas
 	__global__ void thom_k(float* a, float* b, float* c, float* y, int n) {
 		// The global memory access index
 		int idx = threadIdx.x + blockIdx.x * blockDim.x;
 		float bet, * gam;
-		gam = (float*)&gl[idx * n];
+		gam = &gl.float_t[idx * n];
 
 		if (fabs(b[idx * n]) < EPS)
 			printf("Error 1 in tridiag");
@@ -39,15 +62,7 @@ namespace TridiagKernel {
 
 	}
 
-
-	// PCR =====================================================================================================================
-
-
-	void pcr_wrapper(int nbBlocks, int blockSize, int sharedMem, float* d_a, float* d_b, float* d_c, float* d_y, int dim)
-	{
-		pcr_k <<< nbBlocks, blockSize, sharedMem >>> (d_a, d_b, d_c, d_y, dim);
-	}
-
+	// PCR 
 	__global__ void pcr_k(float* a, float* b, float* c, float* y, int n) {
 		// Identifies the thread working within a group
 		int tidx = threadIdx.x % n;
@@ -129,15 +144,7 @@ namespace TridiagKernel {
 		y[gb_index_x * n + sl[tidx]] = sy[tidx];
 	}
 
-
-	// PCR with constant diagonals =============================================================================================
-
-
-	void pcr_wrapper(int nbBlocks, int blockSize, int sharedMem, float d_a, float d_b, float d_c, float* d_y, int dim)
-	{
-		pcr_k <<< nbBlocks, blockSize, sharedMem >>> (d_a, d_b, d_c, d_y, dim);
-	}
-
+	// PCR with constant diagonals
 	__global__ void pcr_k(float a, float b, float c, float* y, int n) {
 		// Identifies the thread working within a group
 		int tidx = threadIdx.x % n;

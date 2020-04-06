@@ -2,21 +2,18 @@
 
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
+#include "cuda_definitions.cuh"
 
-#define EPS (0.0000001f)
-#define M (4 * 1048576)
-__device__ int gl[M];
+namespace TridiagSolverImpl {
 
+	// Callers
+	void thomasGPU(size_t size, size_t dim, float* d_a, float* d_b, float* d_c, float* d_y);
+	void pcr(size_t size, size_t dim, float* d_a, float* d_b, float* d_c, float* d_y);
+	void pcr(size_t size, size_t dim, float a, float b, float c, float* d_y);
 
-namespace TridiagKernel {
-
-	void thomas_wrapper(int nbBlocks, int blockSize, float *d_a, float* d_b, float* d_c, float* d_y, int dim);
+	// Kernels
 	__global__ void thom_k(float* a, float* b, float* c, float* y, int n);
-
-	void pcr_wrapper(int nbBlocks, int blockSize, int sharedMem, float* d_a, float* d_b, float* d_c, float* d_y, int dim);
 	__global__ void pcr_k(float* a, float* b, float* c, float* y, int n);
-
-	void pcr_wrapper(int nbBlocks, int blockSize, int sharedMem, float d_a, float d_b, float d_c, float* d_y, int dim);
 	__global__ void pcr_k(float a, float b, float c, float* y, int n);
 
 }

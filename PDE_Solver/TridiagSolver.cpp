@@ -1,9 +1,12 @@
 #include "TridiagSolver.h"
+#include "TridiagKernel.cuh"
+#include <stdexcept>
 
-#include "cuda_runtime.h"
-#include "device_launch_parameters.h"
-
-TridiagSolver::TridiagSolver(int dim, int size, Method type) : paramsLocation(ParamsLocation::HOST)
+TridiagSolver::TridiagSolver(int dim, int size, Method type) :
+	paramsLocation(ParamsLocation::HOST),
+	lastElapsedTime(0),
+	avgElapsedTime(0),
+	nbCalls(0)
 {
 	this->dim = dim;
 	this->size = size;
@@ -34,13 +37,25 @@ void TridiagSolver::solve(float* a, float* b, float* c, float* y)
 		cudaMemcpy(d_y, y, size * dim * sizeof(float), cudaMemcpyHostToDevice);
 	}
 
-	if (this->method == Method::THOMAS) {		
-		solveThomas(d_a, d_b, d_c, d_y);
+	cudaEventCreate(&start);
+	cudaEventCreate(&stop);
+	cudaEventRecord(start);
+
+	if (this->method == Method::THOMAS) {
+		TridiagSolverImpl::thomasGPU(size, dim, d_a, d_b, d_c, d_y);
 	}
 	else {
-		solvePCR(d_a, d_b, d_c, d_y);
+		TridiagSolverImpl::pcr(size, dim, d_a, d_b, d_c, d_y);
 	}
-	cudaDeviceSynchronize();
+
+	cudaEventRecord(stop);
+	cudaEventSynchronize(stop);
+	cudaEventElapsedTime(&lastElapsedTime, start, stop);
+	avgElapsedTime = avgElapsedTime * nbCalls + lastElapsedTime;
+	nbCalls++;
+	avgElapsedTime /= nbCalls;
+
+	//cudaDeviceSynchronize();
 
 	if (this->paramsLocation == ParamsLocation::HOST) {
 		cudaMemcpy(a, d_a, size * dim * sizeof(float), cudaMemcpyDeviceToHost);
@@ -55,22 +70,38 @@ void TridiagSolver::solve(float* a, float* b, float* c, float* y)
 	}
 }
 
-// TODO - change code so that any size is allowed, not only powers of 2
-void TridiagSolver::solveThomas(float* d_a, float* d_b, float* d_c, float* d_y)
+void TridiagSolver::solve(float a, float b, float c, float* y)
 {
-	int nbBlocks = (int) (size + 255) / 256;
-	int blockSize = 256;
+	float* d_y;
 
-	TridiagKernel::thomas_wrapper(nbBlocks, blockSize, d_a, d_b, d_c, d_y, dim);
-}
+	if (this->paramsLocation == ParamsLocation::DEVICE) {
+		d_y = y;
+	}
+	else {
+		cudaMalloc(&d_y, size * dim * sizeof(float));
+		cudaMemcpy(d_y, y, size * dim * sizeof(float), cudaMemcpyHostToDevice);
+	}
 
-// TODO - change code so that any size is allowed, not only powers of 2
-void TridiagSolver::solvePCR(float* d_a, float* d_b, float* d_c, float* d_y)
-{
-	int minTB = (dim > 255) + 4 * (dim > 63 && dim < 256) + 16 * (dim > 15 && dim < 64) + 64 * (dim > 3 && dim < 16);
-	int nbBlocks = (size + minTB - 1) / minTB;
-	int blockSize = dim * minTB;
-	int sharedMem = 5 * minTB * dim * sizeof(float);
+	cudaEventCreate(&start);
+	cudaEventCreate(&stop);
+	cudaEventRecord(start);
 
-	TridiagKernel::pcr_wrapper(nbBlocks, blockSize, sharedMem, d_a, d_b, d_c, d_y, dim);
+	if (this->method == Method::THOMAS) {
+		throw std::invalid_argument("Thomas method for constant diagonals not yet implemented.");
+	}
+	else {
+		TridiagSolverImpl::pcr(size, dim, a, b, c, d_y);
+	}
+
+	cudaEventRecord(stop);
+	cudaEventSynchronize(stop);
+	cudaEventElapsedTime(&lastElapsedTime, start, stop);
+	avgElapsedTime = avgElapsedTime * nbCalls + lastElapsedTime;
+	nbCalls++;
+	avgElapsedTime /= nbCalls;
+
+	if (this->paramsLocation == ParamsLocation::HOST) {
+		cudaMemcpy(y, d_y, size * dim * sizeof(float), cudaMemcpyDeviceToHost);
+		cudaFree(d_y);
+	}
 }

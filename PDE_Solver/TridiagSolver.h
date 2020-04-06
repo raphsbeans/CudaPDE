@@ -1,9 +1,10 @@
 #pragma once
-#include "TridiagKernel.cuh"
+
+#include "cuda_runtime.h"
+#include "device_launch_parameters.h"
 
 class TridiagSolver {
 public:
-
 	enum class Method {
 		THOMAS,
 		PCR
@@ -16,19 +17,23 @@ public:
 
 	TridiagSolver(int dim, int size, Method type);
 
-	void TridiagSolver::setParamsLocation(ParamsLocation location);
+	void setParamsLocation(ParamsLocation location);
 
-	void TridiagSolver::solve(float* a, float* b, float* c, float* y);
+	void solve(float* a, float* b, float* c, float* y);
+	void solve(float a, float b, float c, float* y);
+
+	float getElapsedTime() { return lastElapsedTime; }
 
 private:
-
-	int size;
-	int dim;
-
 	Method method;
+	size_t size;
+	size_t dim;
+
 	ParamsLocation paramsLocation;
 
-	void TridiagSolver::solveThomas(float* d_a, float* d_b, float* d_c, float* d_y);
-	void TridiagSolver::solvePCR(float* d_a, float* d_b, float* d_c, float* d_y);
-
+	// performance measures
+	cudaEvent_t start, stop;
+	float lastElapsedTime;
+	float avgElapsedTime;
+	size_t nbCalls;
 };
