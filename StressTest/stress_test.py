@@ -2,7 +2,7 @@
 """
 This script will create a series of matrix to check if the algorithm is right
 To call this script from terminal you need to do
-python .\Vectors_for_test\stress_test.py Dim Size
+python .\stress_test.py Dim Size
 """
 
 import numpy as np
@@ -12,7 +12,7 @@ def tridiag(a, b, c, k1=-1, k2=0, k3=1):
     return np.diag(a, k1) + np.diag(b, k2) + np.diag(c, k3)
 
 def save(array, path):
-    main_path = 'Vectors_for_test/'
+    main_path = ''
     np.savetxt(main_path + path + '.txt', array)
 
 def save_all():

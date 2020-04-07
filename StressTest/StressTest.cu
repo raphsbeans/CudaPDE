@@ -10,7 +10,7 @@
 
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
-#include "TridiagKernel.cuh"
+#include "../PDE_Solver/TridiagKernel.cuh"
 
 using namespace std;
 
@@ -44,7 +44,7 @@ int main() {
 	int ok_pcr = 1;
 	int ok_thomas = 1;
 
-	string str = "python .\\Vectors_for_test\\stress_test.py ";
+	string str = "python .\\stress_test.py ";
 	str = str + to_string(Dim) + " " + to_string(NB);
 
 	const char* command = str.c_str();
@@ -58,11 +58,11 @@ int main() {
 	y1 = (float*)calloc(NB * Dim, sizeof(float));
 	y2 = (float*)calloc(NB * Dim, sizeof(float));
 
-	read_txt(a, "Vectors_for_test/a.txt");
-	read_txt(b, "Vectors_for_test/b.txt");
-	read_txt(c, "Vectors_for_test/c.txt");
-	read_txt(x, "Vectors_for_test/x.txt");
-	read_txt(y, "Vectors_for_test/y.txt");
+	read_txt(a, "a.txt");
+	read_txt(b, "b.txt");
+	read_txt(c, "c.txt");
+	read_txt(x, "x.txt");
+	read_txt(y, "y.txt");
 
 	printf("Executing a text with %d different system and %d dimension", NB, Dim);
 
