@@ -79,13 +79,16 @@
   <ItemGroup>
     <CudaCompile Include="constVolKernel.cu" />
     <CudaCompile Include="main.cu" />
+    <CudaCompile Include="StressTest.cu" />
     <CudaCompile Include="TridiagKernel.cu" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BulletOption.cpp" />
     <ClCompile Include="ConstVolPDESolver.cpp" />
     <ClCompile Include="TridiagSolver.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BulletOption.h" />
     <ClInclude Include="constVolKernel.cuh" />
     <ClInclude Include="ConstVolPDESolver.h" />
     <ClInclude Include="cuda_definitions.cuh" />

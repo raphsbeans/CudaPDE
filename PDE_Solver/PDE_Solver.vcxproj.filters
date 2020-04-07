@@ -8,6 +8,9 @@
     <CudaCompile Include="constVolKernel.cu">
       <Filter>ConstVol Model\kernel</Filter>
     </CudaCompile>
+    <CudaCompile Include="StressTest.cu">
+      <Filter>StressTest</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TridiagKernel.cuh">
@@ -24,6 +27,7 @@
       <Filter>ConstVol Model\kernel</Filter>
     </ClInclude>
     <ClInclude Include="Payoff.h" />
+    <ClInclude Include="BulletOption.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="TridiagSolver">
@@ -38,6 +42,9 @@
     <Filter Include="ConstVol Model\kernel">
       <UniqueIdentifier>{755a1bc6-a13c-437b-b451-ebd9bb979a05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="StressTest">
+      <UniqueIdentifier>{3a2916d5-673b-46a0-880e-9497b585d6f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TridiagSolver.cpp">
@@ -46,5 +53,6 @@
     <ClCompile Include="ConstVolPDESolver.cpp">
       <Filter>ConstVol Model</Filter>
     </ClCompile>
+    <ClCompile Include="BulletOption.cpp" />
   </ItemGroup>
 </Project>
