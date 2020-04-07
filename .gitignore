@@ -9,3 +9,8 @@ b.txt
 c.txt
 x.txt
 y.txt
+*.tlog
+*.log
+*.obj
+*.idb
+*.pdb
