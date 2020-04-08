@@ -8,6 +8,9 @@
     <CudaCompile Include="constVolKernel.cu">
       <Filter>ConstVol Model\kernel</Filter>
     </CudaCompile>
+    <CudaCompile Include="BulletOptionKernel.cu">
+      <Filter>BulletOption\kernel</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TridiagKernel.cuh">
@@ -16,7 +19,6 @@
     <ClInclude Include="TridiagSolver.h">
       <Filter>TridiagSolver</Filter>
     </ClInclude>
-    <ClInclude Include="cuda_definitions.cuh" />
     <ClInclude Include="ConstVolPDESolver.h">
       <Filter>ConstVol Model</Filter>
     </ClInclude>
@@ -26,6 +28,11 @@
     <ClInclude Include="Payoff.h" />
     <ClInclude Include="BulletOption.h">
       <Filter>BulletOption</Filter>
+    </ClInclude>
+    <ClInclude Include="global_definitions.h" />
+    <ClInclude Include="cuda_definitions.cuh" />
+    <ClInclude Include="BulletOptionKernel.cuh">
+      <Filter>BulletOption\kernel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -44,6 +51,9 @@
     <Filter Include="BulletOption">
       <UniqueIdentifier>{f29faa9e-adea-429a-a3e3-2eb6fefd6e2d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BulletOption\kernel">
+      <UniqueIdentifier>{db17b3e8-cb54-48a4-81c6-0469976afbed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TridiagSolver.cpp">
@@ -55,5 +65,6 @@
     <ClCompile Include="BulletOption.cpp">
       <Filter>BulletOption</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
 </Project>

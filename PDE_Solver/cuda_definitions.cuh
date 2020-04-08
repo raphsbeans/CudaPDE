@@ -13,4 +13,3 @@ union device_global_memory {
 	float float_t[M];
 };
 __device__ device_global_memory gl;
-

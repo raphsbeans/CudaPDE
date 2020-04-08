@@ -8,6 +8,7 @@ namespace ConstVolKernel {
 		int blockSize = dim;
 		int sharedMemSize = 4 * blockSize * sizeof(float);
 		tridiag_x_matrix_k <<< nbBlocks, blockSize, sharedMemSize >>> (p_d, p_m, p_u, u, dim);
+		cudaDeviceSynchronize();
 	}
 
 	void tridiag_x_matrix_GPU(int dim, int size, float p_d, float p_m, float p_u, float* u) {
@@ -16,6 +17,7 @@ namespace ConstVolKernel {
 		int blockSize = dim;
 		int sharedMemSize = blockSize * sizeof(float);
 		tridiag_x_matrix_k <<< nbBlocks, blockSize, sharedMemSize >>> (p_d, p_m, p_u, u, dim);
+		cudaDeviceSynchronize();
 	}
 
 	__global__ void tridiag_x_matrix_k(float p_d, float p_m, float p_u, float* u, int n)

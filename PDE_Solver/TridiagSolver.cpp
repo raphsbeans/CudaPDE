@@ -6,7 +6,9 @@ TridiagSolver::TridiagSolver(int dim, int size, Method type) :
 	paramsLocation(ParamsLocation::HOST),
 	lastElapsedTime(0),
 	avgElapsedTime(0),
-	nbCalls(0)
+	nbCalls(0),
+	start(0),
+	stop(0)
 {
 	this->dim = dim;
 	this->size = size;
@@ -87,7 +89,7 @@ void TridiagSolver::solve(float a, float b, float c, float* y)
 	cudaEventRecord(start);
 
 	if (this->method == Method::THOMAS) {
-		throw std::invalid_argument("Thomas method for constant diagonals not yet implemented.");
+		TridiagSolverImpl::thomasGPU(size, dim, a, b, c, d_y);
 	}
 	else {
 		TridiagSolverImpl::pcr(size, dim, a, b, c, d_y);

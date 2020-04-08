@@ -2,6 +2,7 @@
 #include "cuda_runtime.h"
 #include <cmath>
 #include "constVolKernel.cuh"
+#include "global_definitions.h"
 #include "TridiagSolver.h"
 
 ConstVolPDESolver::ConstVolPDESolver(float volatility, float rate)
@@ -41,15 +42,15 @@ void ConstVolPDESolver::solveGPU()
 	q_d = -p_d;
 
 	// Initialized Tridiagonal Solver
-	TridiagSolver tridiagSolver(mSpotGridSize, mStateGridSize, TridiagSolver::Method::PCR);
-	tridiagSolver.setParamsLocation(TridiagSolver::ParamsLocation::DEVICE);
+	TridiagSolver tridiagSolver(mSpotGridSize, mStateGridSize, TridiagSolver::Method::THOMAS);
+	tridiagSolver.setParamsLocation(ParamsLocation::DEVICE);
 
 	// initalize payoff on GPU =====================================================
 	float* payoff = nullptr;
-	cudaMalloc(&pPayoff, mSpotGridSize * mStateGridSize * sizeof(float));
-	pPayoff->initPayoff(payoff);
+	cudaMalloc(&payoff, mSpotGridSize * mStateGridSize * sizeof(float));
+	pPayoff->initPayoff(payoff, ParamsLocation::DEVICE);
 
-	for (int i = mTimeGridSize; i >= 0; i--) {
+	for (int i = mTimeGridSize - 1; i > 0; i--) {
 		// payoff = P * payoff
 		ConstVolKernel::tridiag_x_matrix_GPU(mSpotGridSize, mStateGridSize, p_d, p_m, p_u, payoff);
 

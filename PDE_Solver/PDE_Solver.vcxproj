@@ -77,6 +77,7 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <CudaCompile Include="BulletOptionKernel.cu" />
     <CudaCompile Include="constVolKernel.cu" />
     <CudaCompile Include="main.cu" />
     <CudaCompile Include="TridiagKernel.cu" />
@@ -84,13 +85,16 @@
   <ItemGroup>
     <ClCompile Include="BulletOption.cpp" />
     <ClCompile Include="ConstVolPDESolver.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="TridiagSolver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BulletOption.h" />
+    <ClInclude Include="BulletOptionKernel.cuh" />
     <ClInclude Include="constVolKernel.cuh" />
     <ClInclude Include="ConstVolPDESolver.h" />
     <ClInclude Include="cuda_definitions.cuh" />
+    <ClInclude Include="global_definitions.h" />
     <ClInclude Include="Payoff.h" />
     <ClInclude Include="TridiagKernel.cuh" />
     <ClInclude Include="TridiagSolver.h" />

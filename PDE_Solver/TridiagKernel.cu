@@ -2,8 +2,31 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <fstream>
 
 namespace TridiagSolverImpl {
+
+	void dumpMatrix(size_t size1, size_t size2, float* matrix_d, char* path)
+	{
+		float* matrix = new float[size1 * size2];
+		cudaMemcpy(matrix, matrix_d, size1 * size2 * sizeof(float), cudaMemcpyDeviceToHost);
+
+		std::ofstream file(path);
+
+		for (size_t i = 0; i < size1; i++) {
+			for (size_t j = 0; j < size2; j++) {
+				file << matrix[i + j * size1];
+				if (j < size2 - 1)
+					file << ",";
+				else
+					file << "\n";
+			}
+		}
+
+		file.close();
+
+		delete[] matrix;
+	}
 
 	void thomasGPU(size_t size, size_t dim, float* d_a, float* d_b, float* d_c, float* d_y)
 	{
@@ -11,6 +34,16 @@ namespace TridiagSolverImpl {
 		size_t blockSize = 256;
 
 		thom_k <<< nbBlocks, blockSize >>> (d_a, d_b, d_c, d_y, dim);
+		dumpMatrix(dim, size, d_y, "C:\\Users\\erik\\Desktop\\thomas.csv");
+	}
+
+	void thomasGPU(size_t size, size_t dim, float a, float b, float c, float* d_y)
+	{
+		size_t nbBlocks = (int)(size + 255) / 256;
+		size_t blockSize = 256;
+
+		thom_k << < nbBlocks, blockSize >> > (a, b, c, d_y, dim);
+		dumpMatrix(dim, size, d_y, "C:\\Users\\erik\\Desktop\\thomas.csv");
 	}
 
 	void pcr(size_t size, size_t dim, float* d_a, float* d_b, float* d_c, float* d_y)
@@ -21,6 +54,7 @@ namespace TridiagSolverImpl {
 		size_t sharedMem = 5 * minTB * dim * sizeof(float);
 
 		pcr_k <<< nbBlocks, blockSize, sharedMem >>> (d_a, d_b, d_c, d_y, dim);
+		dumpMatrix(dim, size, d_y, "C:\\Users\\erik\\Desktop\\pcr.csv");
 	}
 
 	void pcr(size_t size, size_t dim, float a, float b, float c, float* d_y)
@@ -31,6 +65,7 @@ namespace TridiagSolverImpl {
 		size_t sharedMem = 5 * minTB * dim * sizeof(float);
 
 		pcr_k <<< nbBlocks, blockSize, sharedMem >>> (a, b, c, d_y, dim);
+		dumpMatrix(dim, size, d_y, "C:\\Users\\erik\\Desktop\\pcr.csv");
 	}
 
 	// Thomas
@@ -54,6 +89,35 @@ namespace TridiagSolverImpl {
 				printf("Error 2 in tridag"); //Algorithm fails;
 
 			y[idx * n + j] = (y[idx * n + j] - a[idx * n + j] * y[idx * n + j - 1]) / bet;
+		}
+
+		for (int j = n - 2; j >= 0; --j) {
+			y[idx * n + j] -= gam[j + 1] * y[idx * n + j + 1]; // Backsubstitution
+		}
+
+	}
+
+	// Thomas
+	__global__ void thom_k(float a, float b, float c, float* y, int n) {
+		// The global memory access index
+		int idx = threadIdx.x + blockIdx.x * blockDim.x;
+		float bet, * gam;
+		gam = &gl.float_t[idx * n];
+
+		if (fabs(b) < EPS)
+			printf("Error 1 in tridiag");
+
+		// If this happens then you should rewrite your equations as a set of order N - 1
+		bet = b;
+		y[idx * n] = y[idx * n] / bet;
+		for (int j = 1; j < n; ++j) {
+			gam[j] = c / bet;
+			bet = b - a * gam[j];
+
+			if (fabsf(bet) < EPS)
+				printf("Error 2 in tridag"); //Algorithm fails;
+
+			y[idx * n + j] = (y[idx * n + j] - a * y[idx * n + j - 1]) / bet;
 		}
 
 		for (int j = n - 2; j >= 0; --j) {

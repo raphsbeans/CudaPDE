@@ -1,5 +1,10 @@
+
+#define HIDE
+#ifndef HIDE
+
 #include "cuda_definitions.cuh"
 #include "TridiagSolver.h"
+#include "global_definitions.h"
 
 #include <iostream>
 using namespace std;
@@ -60,7 +65,7 @@ int main() {
 	cudaMemcpy(d_y, y, size * Dim * sizeof(float), cudaMemcpyHostToDevice);
 
 	TridiagSolver solver(Dim, size, TridiagSolver::Method::PCR);
-	solver.setParamsLocation(TridiagSolver::ParamsLocation::DEVICE);
+	solver.setParamsLocation(ParamsLocation::DEVICE);
 	solver.solve(d_a, d_b, d_c, d_y);
 
 	cudaMemcpy(y, d_y, size * Dim * sizeof(float), cudaMemcpyDeviceToHost);
@@ -79,4 +84,4 @@ int main() {
 	return 0;
 }
 
-
+#endif

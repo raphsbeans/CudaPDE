@@ -1,31 +1,45 @@
 #pragma once
 #include "Payoff.h"
+#include <vector>
+
 class BulletOption : public Payoff {
 public:
-	BulletOption(float Strike, size_t daysToMaturity, float S0, float sMin, float sMax, float P1, float P2, float B, 
-		size_t * pre_schedule, size_t spotGridSize, size_t timeGridSize, size_t stateSize);
-	void initPayoff(float* payoff);
-	void interStep(float* payoff, size_t timeIdx);
-	float applySolution(float* sol);
-	void getSpotRange(float& sMin, float& sMax);
-	size_t getGridSizes(size_t& spotGridSize, size_t& timeGridSize, size_t& stateSize);
+	BulletOption(float strike, size_t daysToMaturity, float barrier, size_t P1, size_t P2, const std::vector<size_t>& scheduleDays);
+	
+	void setCurrPosition(float currSpot, size_t currState);
+
+	virtual void initPayoff(float* payoff, ParamsLocation paramsLocation = ParamsLocation::DEVICE);
+	virtual void interStep(float* payoff, size_t timeIdx);
+	
+	virtual float applySolution(float* sol);
+	
+	virtual void getSpotRange(float& sMin, float& sMax);
+	virtual void getGridSizes(size_t& spotGridSize, size_t& timeGridSize, size_t& stateSize);
+
+	float currentPrice;
 
 private:
-	size_t daysToMaturity = 0; //Only working days
-	size_t spotGridSize = 0; 
-	size_t timeGridSize = 0; 
-	size_t stateSize = 0;
+	// current position
+	float currSpot;	// Current Spot
+	size_t currState; // Current State Variable
 
-	float S0 = 0.0f; //Initial Price
-	float Strike = 0.0f; //Strike
-	float P1 = 0.0f; //Minimum Times heating B
-	float P2 = 0.0f; //Maximum Times heating B
-	float B = 0.0f; //The limit 
-	float sMin = 0.0f; //Minimum value in the spot grid
-	float sMax = 0.0f; //Maximum value in the spot grid
-	float dx = 0.0f; //infinitesimal value for the spot grid
-	float dt = 0.0f; //infinitesimal -> grid time
+	// Payoff related
+	size_t daysToMaturity; //Only working days
+	float strike; //Strike
+	float P1; //Minimum Times heating Barrier
+	float P2; //Maximum Times heating Barrier
+	float barrier;
+	std::vector<bool> isSchedule;
+	size_t scheduleCounter;
 
-	size_t* pre_schedule;
+	// Grid related
+	size_t spotGridSize;
+	size_t timeGridSize;
+	size_t stateSize;
+
+	float Smin; //Minimum value in the spot grid
+	float Smax; //Maximum value in the spot grid
+	float dx; //infinitesimal value for the spot grid
+	float dt; //infinitesimal -> grid time	
 };
 
