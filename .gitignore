@@ -16,3 +16,5 @@ y.txt
 *.pdb
 *.deps
 *.cache
+.vs/*
+x64/*
